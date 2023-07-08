@@ -1,0 +1,18 @@
+spring:
+  cassandra:
+    keyspace-name: my_keyspace
+    username: cassandra
+    password: cassandra
+    schema-action: create_if_not_exists
+    local-datacenter: datacenter1
+    contact-points: 127.0.0.1:9042
+springdoc:
+  use-management-port: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, openapi, swagger-ui
+  server:
+    port: 9090
