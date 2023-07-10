@@ -1,6 +1,6 @@
 spring:
   cassandra:
-    keyspace-name: my_keyspace
+    keyspace-name: T9404
     username: cassandra
     password: cassandra
     schema-action: create_if_not_exists
@@ -16,3 +16,9 @@ management:
         include: health, openapi, swagger-ui
   server:
     port: 9090
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

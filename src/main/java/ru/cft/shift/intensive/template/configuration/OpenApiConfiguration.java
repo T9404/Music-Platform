@@ -12,23 +12,23 @@ import java.util.Locale;
 
 @Configuration
 public class OpenApiConfiguration {
-  private final PropertyResolverUtils propertyResolverUtils;
+    private final PropertyResolverUtils propertyResolverUtils;
 
-  @Autowired
-  public OpenApiConfiguration(PropertyResolverUtils propertyResolverUtils) {
-    this.propertyResolverUtils = propertyResolverUtils;
-  }
+    @Autowired
+    public OpenApiConfiguration(PropertyResolverUtils propertyResolverUtils) {
+        this.propertyResolverUtils = propertyResolverUtils;
+    }
 
-  @Bean
-  public OpenAPI openAPI() {
-    return new OpenAPI()
-        .info(new Info().title(message("api.title"))
-            .description(message("api.description"))
-            .version("v1.0.0")
-            .license(new License().name(message("api.license")).url("https://cft.ru")));
-  }
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .info(new Info().title(message("api.title"))
+                        .description(message("api.description"))
+                        .version("v1.0.0")
+                        .license(new License().name(message("api.license")).url("https://cft.ru")));
+    }
 
-  private String message(String property) {
-    return this.propertyResolverUtils.resolve(property, Locale.getDefault());
-  }
+    private String message(String property) {
+        return this.propertyResolverUtils.resolve(property, Locale.getDefault());
+    }
 }
