@@ -29,8 +29,6 @@ import java.util.Map;
 public class CustomSecurityFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-
-    //  private final AuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
     private final AuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("/auth/success");
     private final AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler("/auth/failed");
 
@@ -48,22 +46,23 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
         try {
             Authentication authentication = obtainBody(request);
             authentication = authenticationManager.authenticate(authentication);
-            successfulAuthentication(request, response, filterChain, authentication);
+            successfulAuthentication(request, response, authentication);
         } catch (AuthenticationException exception) {
             unsuccessfulAuthentication(request, response, exception);
         }
     }
 
-    private void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws ServletException, IOException {
+    private void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws ServletException, IOException {
         SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication);
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
-//    SecurityContextHolder.getContext().setAuthentication(authentication);
         this.successHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
-    private void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws ServletException, IOException {
+    private void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+            throws ServletException, IOException {
         SecurityContext context = this.securityContextHolderStrategy.getContext();
         this.securityContextHolderStrategy.clearContext();
         context.setAuthentication(null);
@@ -72,13 +71,12 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
 
     protected Authentication obtainBody(HttpServletRequest request) {
         try {
-            Map<String, String> map = this.objectMapper.readValue(request.getInputStream(), Map.class);
+            Map<String, String> map = objectMapper.readValue(request.getInputStream(), Map.class);
             String username = map.get("username");
             String password = map.get("password");
             if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
                 throw new BadCredentialsException("Username or password is/are empty");
             }
-
             return UsernamePasswordAuthenticationToken.unauthenticated(username, password);
         } catch (IOException e) {
             throw new AuthenticationServiceException(e.getMessage(), e);

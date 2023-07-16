@@ -14,15 +14,17 @@ public class SecurityCustomConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
         );
+
         http.cors(configurer -> configurer.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()));
         http.csrf(AbstractHttpConfigurer::disable);
         http.apply(new CustomConfigurer<>());
+        http.logout(configurer -> configurer.logoutSuccessUrl("/auth/success"));
         return http.build();
     }
 }

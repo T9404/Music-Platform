@@ -38,14 +38,27 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     }
 
     @Override
-    public UsernameDto create(UserDto user) {
-        Users users = new Users(user.username(), this.passwordEncoder.encode(user.password()), user.email(), user.roles());
-        return new UsernameDto(this.usersRepository.save(users).getUsername());
+    public boolean isExists(String username) {
+        return usersRepository.existsById(username);
+    }
+
+    @Override
+    public void create(Users user) {
+        if (isExists(user.getUsername())) {
+            throw new IllegalArgumentException("User " + user.getUsername() + " already exists");
+        }
+        if (user.getRoles().isEmpty()) {
+            user.getRoles().add("USER");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        usersRepository.save(user);
+        new UsernameDto(user.getUsername());
     }
 
     @Override
     public void delete(String username) {
-        Users users = this.usersRepository.findById(username).orElseThrow(() -> new org.springframework.security.core.userdetails.UsernameNotFoundException("User " + username + " not found"));
+        Users users = this.usersRepository.findById(username).orElseThrow(() ->
+                new org.springframework.security.core.userdetails.UsernameNotFoundException("User " + username + " not found"));
         this.usersRepository.delete(users);
     }
 

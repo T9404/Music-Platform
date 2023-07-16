@@ -20,11 +20,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails;
         try {
-            System.out.println("username: " + username + " I try to load user by username");
             userDetails = this.userDetailsService.loadUserByUsername(username);
-            System.out.println("userDetails: " + userDetails.getUsername());
         } catch (UsernameNotFoundException exception) {
-            System.out.println("UsernameNotFoundException");
             throw new BadCredentialsException("Bad credentials");
         }
 
@@ -32,7 +29,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad credentials");
         }
 
-        UsernamePasswordAuthenticationToken result = UsernamePasswordAuthenticationToken.authenticated(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken result = UsernamePasswordAuthenticationToken.authenticated(userDetails,
+                authentication.getCredentials(), userDetails.getAuthorities());
         result.setDetails(authentication.getDetails());
         return result;
     }
