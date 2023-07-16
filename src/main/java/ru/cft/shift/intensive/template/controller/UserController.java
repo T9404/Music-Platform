@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
-import ru.cft.shift.intensive.template.repository.entity.Users;
+import ru.cft.shift.intensive.template.entity.Users;
 import ru.cft.shift.intensive.template.service.UsersService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -38,7 +38,6 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<UsernameDto> create(@RequestBody @Valid Users user) {
         try {
-            user.getRoles().add("USER");
             usersService.create(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import ru.cft.shift.intensive.template.configuration.security.CustomConfigurer;
+import ru.cft.shift.intensive.template.security.CustomConfigurer;
 
 @Configuration
 public class SecurityCustomConfiguration {

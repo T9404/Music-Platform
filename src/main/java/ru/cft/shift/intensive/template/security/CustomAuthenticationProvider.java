@@ -1,4 +1,4 @@
-package ru.cft.shift.intensive.template.configuration.security;
+package ru.cft.shift.intensive.template.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

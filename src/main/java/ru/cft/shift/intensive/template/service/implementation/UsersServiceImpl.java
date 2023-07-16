@@ -1,4 +1,4 @@
-package ru.cft.shift.intensive.template.service.impl;
+package ru.cft.shift.intensive.template.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.UserDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
 import ru.cft.shift.intensive.template.repository.UsersRepository;
-import ru.cft.shift.intensive.template.repository.entity.Users;
+import ru.cft.shift.intensive.template.entity.Users;
 import ru.cft.shift.intensive.template.service.UsersService;
 import org.springframework.security.core.userdetails.UserDetails;
 

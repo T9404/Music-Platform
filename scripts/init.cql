@@ -1,6 +1,6 @@
-create keyspace T9404 with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+create keyspace test_old with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE TABLE T9404.users
+CREATE TABLE test_old.users
 (
     username TEXT primary key,
     password TEXT,
@@ -9,4 +9,4 @@ CREATE TABLE T9404.users
 );
 
 
-SELECT * FROM T9404.users;
+SELECT * FROM test_old.users;

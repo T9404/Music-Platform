@@ -2,7 +2,7 @@ package ru.cft.shift.intensive.template.service;
 
 import ru.cft.shift.intensive.template.dto.UserDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
-import ru.cft.shift.intensive.template.repository.entity.Users;
+import ru.cft.shift.intensive.template.entity.Users;
 
 import java.util.List;
 
