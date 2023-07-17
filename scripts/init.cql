@@ -1,6 +1,6 @@
-create keyspace test_old with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+create keyspace test_new_nn1 with replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE TABLE test_old.users
+CREATE TABLE test_new_nn1.users
 (
     username TEXT primary key,
     password TEXT,
@@ -8,5 +8,63 @@ CREATE TABLE test_old.users
     roles    SET<TEXT>
 );
 
+CREATE TYPE test_new_nn1.song
+(
+    id   INT,
+    name TEXT,
+    description TEXT,
+    owner TEXT,
+    duration INT
+);
 
-SELECT * FROM test_old.users;
+CREATE TYPE test_new_nn1.album
+(
+    name TEXT,
+    genre TEXT,
+    owner TEXT,
+    releaseDate TEXT,
+    songs SET<FROZEN<test_new_nn1.song>> // song name
+);
+
+CREATE TABLE test_new_nn1.signer_by_name
+(
+    name       TEXT PRIMARY KEY,
+    biography  TEXT,
+    email      TEXT,
+    password   TEXT,
+    albums     SET<FROZEN<test_new_nn1.album>>
+);
+
+INSERT INTO test_new_nn1.signer_by_name (name, biography, email, password, albums)
+VALUES ('Eminem', 'Eminem biography', 'signer@gmail.com', 'qwerty', {{name: 'Kamikaze', genre: 'Rap', owner: 'Enimen', releaseDate: '2018-08-31',
+        songs: {{id: 1, name: 'The Ringer', description: 'The Ringer description', owner: 'Enimen', duration: 337}}}});
+SELECT * FROM test_new_nn1.signer_by_name;
+
+CREATE TABLE test_new_nn1.album_by_signer
+(
+    signer_name TEXT,
+    genre      TEXT,
+    album_name  TEXT,
+    release_date TEXT,
+    songs       SET<FROZEN<test_new_nn1.song>>,
+    PRIMARY KEY ((signer_name), album_name)
+) WITH CLUSTERING ORDER BY (album_name ASC);
+
+INSERT INTO test_new_nn1.album_by_signer (signer_name, album_name, genre, release_date, songs)
+VALUES ('Eminem', 'Kamikaze', 'Rap', '2018-08-31', {{id: 1, name: 'The Ringer', description: 'The Ringer description',
+    owner: 'Enimen', duration: 337}});
+
+SELECT * FROM test_new_nn1.album_by_signer;
+
+CREATE TABLE test_new_nn1.album_by_genre
+(
+    genre      TEXT,
+    album_name TEXT,
+    signer_name TEXT,
+    release_date TEXT,
+    songs       SET<FROZEN<test_new_nn1.song>>,
+    PRIMARY KEY ((genre), signer_name)
+) WITH CLUSTERING ORDER BY (signer_name ASC);
+
+
+SELECT * FROM test_new_nn1.users;
