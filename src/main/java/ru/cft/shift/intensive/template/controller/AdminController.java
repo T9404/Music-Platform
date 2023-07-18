@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.cft.shift.intensive.template.dto.SignerDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
+import ru.cft.shift.intensive.template.entity.SignerByName;
+import ru.cft.shift.intensive.template.service.SignerService;
 import ru.cft.shift.intensive.template.service.UsersService;
 
 import java.util.List;
@@ -16,14 +19,16 @@ import java.util.List;
 @RequestMapping("admin")
 public class AdminController {
     private final UsersService usersService;
+    private final SignerService signerService;
 
     @Autowired
-    public AdminController(UsersService usersService) {
+    public AdminController(UsersService usersService, SignerService signerService) {
         this.usersService = usersService;
+        this.signerService = signerService;
     }
 
     @GetMapping("users")
-    public ResponseEntity<List<UsernameDto>> getList() {
+    public ResponseEntity<List<UsernameDto>> getUsersList() {
         return ResponseEntity.ok(usersService.list());
     }
 
@@ -32,11 +37,38 @@ public class AdminController {
         return ResponseEntity.ok(usersService.create(userDto));
     }*/
 
-    @DeleteMapping("delete/{username}")
-    public ResponseEntity<Void> delete(@PathVariable @Size(min = 3, max = 50) String username) {
+    @DeleteMapping("deleteUser/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable @Size(min = 3, max = 50) String username) {
         usersService.delete(username);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("signers")
+    public ResponseEntity<List<SignerDto>> getSignersList() {
+        return ResponseEntity.ok(signerService.getList());
+    }
+
+    @PostMapping("signers")
+    public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid SignerByName signer) {
+        try {
+            return ResponseEntity.ok(signerService.create(signer));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("deleteSigner/{signerName}")
+    public ResponseEntity<Void> deleteSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
+        try {
+            System.out.println("ok");
+            signerService.delete(signerName);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // добавить остальное
 }
 
 // сделать здесь добавление signer, вместо user

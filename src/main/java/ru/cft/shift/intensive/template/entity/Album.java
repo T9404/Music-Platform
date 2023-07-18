@@ -11,7 +11,6 @@ public class Album {
     private String name;
     private String genre;
     private String owner;
-    @Column("release_date")
     private String releaseDate;
     private Set<Song> songs = new HashSet<>();
 

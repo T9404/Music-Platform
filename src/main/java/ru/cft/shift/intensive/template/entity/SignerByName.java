@@ -2,6 +2,7 @@ package ru.cft.shift.intensive.template.entity;
 
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Table("signer_by_name")
 public class SignerByName {
-    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKey
     private String name;
     @Column
     private String biography;

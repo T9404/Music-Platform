@@ -10,5 +10,5 @@ public interface SignerService {
     SignerDto findBySignerName(String signerName);
     boolean isExists(String signerName);
     SignerDto create(SignerByName signer);
-    void delete(String signerName);
+    void delete(String signerName) throws Exception;
 }
