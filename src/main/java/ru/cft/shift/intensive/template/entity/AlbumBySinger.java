@@ -19,7 +19,7 @@ public class AlbumBySinger implements Albums {
 
     @PrimaryKeyClass
     public static class Key {
-        @PrimaryKeyColumn(name = "singer_name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+        @PrimaryKeyColumn(name = "signer_name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
         private String singerName;
         @PrimaryKeyColumn(name = "album_name", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
         private String albumName;

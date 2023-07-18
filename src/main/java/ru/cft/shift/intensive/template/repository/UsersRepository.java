@@ -6,5 +6,4 @@ import ru.cft.shift.intensive.template.entity.Users;
 
 @Repository
 public interface UsersRepository extends CassandraRepository<Users, String> {
-
 }

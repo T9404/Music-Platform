@@ -72,3 +72,5 @@ SELECT * FROM test_new_nn1.users;
 INSERT INTO test_new_nn1.users(username, password, email,roles) VALUES ('test_admin', '$2a$10$b4LHV4715bKsByhUnc5qJOzUhEkm5/2futNGFe4HyGBa.TJ5SZCXS', 'ok@gmail.com', {'ADMIN'});
 
 SELECT * FROM test_new_nn1.signer_by_name;
+SELECT * FROM test_new_nn1.album_by_signer;
+SELECT * FROM test_new_nn1.album_by_genre;

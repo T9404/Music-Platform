@@ -8,7 +8,9 @@ import java.util.List;
 public interface AlbumService {
     List<AlbumDto> getList();
     AlbumDto getAlbum(String albumName, String singerName);
-    boolean isExists(String albumName, String singerName);
     AlbumDto create(Album album);
+    boolean isAlbumExists(String albumName, String singerName);
     void delete(String albumName, String singerName);
+    List<AlbumDto> getSignerAlbums(String singerName);
+    void deleteSignerAlbums(String singerName);
 }

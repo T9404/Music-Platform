@@ -32,11 +32,6 @@ public class AdminController {
         return ResponseEntity.ok(usersService.list());
     }
 
-    /*@PostMapping("users")
-    public ResponseEntity<UsernameDto> create(@RequestBody @Valid UserDto userDto) {
-        return ResponseEntity.ok(usersService.create(userDto));
-    }*/
-
     @DeleteMapping("deleteUser/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable @Size(min = 3, max = 50) String username) {
         usersService.delete(username);
@@ -48,7 +43,7 @@ public class AdminController {
         return ResponseEntity.ok(signerService.getList());
     }
 
-    @PostMapping("signers")
+    @PostMapping("signer")
     public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid SignerByName signer) {
         try {
             return ResponseEntity.ok(signerService.create(signer));

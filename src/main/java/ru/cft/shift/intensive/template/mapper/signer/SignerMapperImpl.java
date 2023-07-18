@@ -26,5 +26,4 @@ public class SignerMapperImpl implements SignerMapper {
                 .map(albumMapper::entityToAlbumDto)
                 .collect(Collectors.toSet());
     }
-
 }

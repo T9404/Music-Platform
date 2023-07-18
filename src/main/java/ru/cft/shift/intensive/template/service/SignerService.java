@@ -8,7 +8,7 @@ import java.util.List;
 public interface SignerService {
     List<SignerDto> getList();
     SignerDto findBySignerName(String signerName);
-    boolean isExists(String signerName);
     SignerDto create(SignerByName signer);
+    boolean isSignerExists(String signerName);
     void delete(String signerName) throws Exception;
 }
