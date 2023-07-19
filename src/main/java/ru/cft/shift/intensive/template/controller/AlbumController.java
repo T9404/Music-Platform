@@ -35,46 +35,28 @@ public class AlbumController {
 
     @PostMapping()
     public ResponseEntity<AlbumDto> createAlbum(@RequestBody @Validated Album album) {
-        try {
-            return ResponseEntity.ok(albumService.create(album));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(albumService.create(album));
     }
 
     @DeleteMapping("{albumName}")
     public ResponseEntity<Void> deleteAlbum(@RequestParam("singerName") @Size(min = 1, max = 50) String singerName,
                                             @PathVariable @Size(min = 1, max = 50) String albumName) {
-        try {
-            albumService.delete(albumName, singerName);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        albumService.delete(albumName, singerName);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("addSong/{albumName}")
     public ResponseEntity<AlbumDto> addSong(@PathVariable @Size(min = 1, max = 50) String albumName,
                                             @RequestBody @Validated Song song) {
-        try {
-            return ResponseEntity.ok(albumService.addSong(albumName, song));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(albumService.addSong(albumName, song));
     }
 
     @DeleteMapping("deleteSong/{albumName}/{songName}")
     public ResponseEntity<Void> deleteSong(@RequestParam("ownerName") @Size(min = 1, max = 50) String ownerName,
                                             @PathVariable @Size(min = 1, max = 50) String albumName,
                                             @PathVariable @Size(min = 1, max = 50) String songName) {
-        try {
-            albumService.deleteSong(albumName, ownerName, songName);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        albumService.deleteSong(albumName, ownerName, songName);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("getByGenre/{genre}")

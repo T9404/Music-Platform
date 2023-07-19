@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AlbumByGenreRepository extends CassandraRepository<AlbumByGenre, AlbumByGenre.Key> {
-    Optional<List<AlbumByGenre>> findAllByKey_Genre(String genre);
+    List<AlbumByGenre> findAllByKey_Genre(String genre);
 }

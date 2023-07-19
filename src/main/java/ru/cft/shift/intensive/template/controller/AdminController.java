@@ -45,11 +45,7 @@ public class AdminController {
 
     @PostMapping("signer")
     public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid Signer signer) {
-        try {
-            return ResponseEntity.ok(signerService.create(signer));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(signerService.create(signer));
     }
 
     @DeleteMapping("deleteSigner/{signerName}")

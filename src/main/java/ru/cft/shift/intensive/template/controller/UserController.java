@@ -41,17 +41,13 @@ public class UserController {
     })
     @PostMapping()
     public ResponseEntity<UsernameDto> create(@RequestBody @Valid Users user) {
-        try {
-            usersService.create(user);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        usersService.create(user);
         return ResponseEntity.ok(new UsernameDto(user.getUsername()));
     }
 
     @Operation(summary = "api.user.get.operation.summary")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "api.user.get.api-responses.200.description"),
+            @ApiResponse(responseCode = "200", description = "api.get.api-responses.200.description"),
             @ApiResponse(responseCode = "404", description = "api.user.get.api-responses.404.description", content =
                     {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
             @ApiResponse(responseCode = "500", description = "api.server.error", content =
@@ -62,9 +58,14 @@ public class UserController {
         return ResponseEntity.ok(new UsernameDto(usersService.findByUsername(username).username()));
     }
 
+    @Operation(summary = "api.signer.get.operation.summary")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "api.get.api-responses.200.description"),
+            @ApiResponse(responseCode = "404", description = "api.signer.get.api-responses.404.description", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+    })
     @GetMapping("signer/{signerName}")
     public ResponseEntity<SignerDto> getSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
         return ResponseEntity.ok(signerService.findBySignerName(signerName));
     }
-
 }

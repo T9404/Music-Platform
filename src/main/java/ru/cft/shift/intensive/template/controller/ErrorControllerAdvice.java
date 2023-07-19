@@ -11,8 +11,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.cft.shift.intensive.template.exception.DefaultException;
-import ru.cft.shift.intensive.template.exception.UsernameNotFoundException;
+import ru.cft.shift.intensive.template.exception.*;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -38,6 +37,31 @@ public class ErrorControllerAdvice {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SignerAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleSignerAlreadyExistsException(SignerAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(SignerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSignerNotFoundException(SignerNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AlbumAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumAlreadyExistsException(AlbumAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AlbumNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumNotFoundException(AlbumNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SongNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSongNotFoundException(SongNotFoundException exception) {
         return handleCustomException(exception, HttpStatus.NOT_FOUND);
     }
 

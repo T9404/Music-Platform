@@ -10,7 +10,7 @@ import ru.cft.shift.intensive.template.exception.SignerAlreadyExistsException;
 import ru.cft.shift.intensive.template.exception.SignerNotFoundException;
 import ru.cft.shift.intensive.template.mapper.signer.SignerMapper;
 import ru.cft.shift.intensive.template.mapper.signer.SignerMapperImpl;
-import ru.cft.shift.intensive.template.repository.SignerByNameRepository;
+import ru.cft.shift.intensive.template.repository.SignerRepository;
 import ru.cft.shift.intensive.template.service.AlbumService;
 import ru.cft.shift.intensive.template.service.SignerService;
 
@@ -19,42 +19,51 @@ import java.util.stream.Collectors;
 
 @Service
 public class SignerServiceImpl implements SignerService {
-    private final SignerByNameRepository signerByNameRepository;
+    private final SignerRepository signerRepository;
     private final AlbumService albumService;
     private final SignerMapper signerMapper = new SignerMapperImpl();
 
     @Autowired
-    public SignerServiceImpl(SignerByNameRepository signerByNameRepository, @Lazy AlbumService albumService) {
-        this.signerByNameRepository = signerByNameRepository;
+    public SignerServiceImpl(SignerRepository signerRepository, @Lazy AlbumService albumService) {
+        this.signerRepository = signerRepository;
         this.albumService = albumService;
     }
 
     @Override
     public List<SignerDto> getList() {
-        return signerByNameRepository.findAll().stream()
+        return signerRepository.findAll().stream()
                 .map(signerMapper::entityToSignerDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public boolean isSignerExists(String signerName) {
-        return signerByNameRepository.findById(signerName).isPresent();
+        return signerRepository.findById(signerName).isPresent();
     }
 
     @Override
     public SignerDto findBySignerName(String signerName) {
-        return signerByNameRepository.findById(signerName)
+        return signerRepository.findById(signerName)
                 .map(signerMapper::entityToSignerDto)
                 .orElseThrow(() -> new IllegalArgumentException("Signer " + signerName + " not found"));
     }
+
     @Override
     public SignerDto create(Signer signer) {
-        if (isSignerExists(signer.getName())) {
-            throw new SignerAlreadyExistsException();
-        }
-        signerByNameRepository.save(signer);
+        checkSignerNotExists(signer.getName());
+        saveSigner(signer);
         updateAlbums(signer);
         return signerMapper.entityToSignerDto(signer);
+    }
+
+    private void checkSignerNotExists(String name) {
+        if (isSignerExists(name)) {
+            throw new SignerAlreadyExistsException();
+        }
+    }
+
+    private void saveSigner(Signer signer) {
+        signerRepository.save(signer);
     }
 
     private void updateAlbums(Signer signer) {
@@ -67,9 +76,9 @@ public class SignerServiceImpl implements SignerService {
 
     @Override
     public void delete(String signerName) {
-        Signer signer = signerByNameRepository.findById(signerName)
+        Signer signer = signerRepository.findById(signerName)
                 .orElseThrow(SignerNotFoundException::new);
         albumService.deleteSignerAlbums(signerName);
-        signerByNameRepository.delete(signer);
+        signerRepository.delete(signer);
     }
 }
