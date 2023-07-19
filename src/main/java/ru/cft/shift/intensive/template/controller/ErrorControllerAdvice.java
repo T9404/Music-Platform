@@ -75,6 +75,16 @@ public class ErrorControllerAdvice {
         return handleCustomException(exception, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
+    }
+
     public record ErrorResponse(LocalDateTime timestamp, String message, int code) {
     }
 

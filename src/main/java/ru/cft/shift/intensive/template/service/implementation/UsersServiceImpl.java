@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.UserDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
+import ru.cft.shift.intensive.template.exception.UserAlreadyExistsException;
+import ru.cft.shift.intensive.template.exception.UserNotFoundException;
 import ru.cft.shift.intensive.template.repository.UsersRepository;
 import ru.cft.shift.intensive.template.entity.Users;
 import ru.cft.shift.intensive.template.service.UsersService;
@@ -34,7 +36,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     public UserDto findByUsername(String username) {
         return this.usersRepository.findById(username)
                 .map(user -> new UserDto(user.getUsername(), user.getPassword(), user.getEmail(), user.getRoles()))
-                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -43,22 +45,29 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     }
 
     @Override
-    public void create(Users user) {
-        if (isExists(user.getUsername())) {
-            throw new IllegalArgumentException("User " + user.getUsername() + " already exists");
+    public UsernameDto create(Users user) {
+        checkUserNotExists(user.getUsername());
+        setDefaultRole(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        usersRepository.save(user);
+        return new UsernameDto(user.getUsername());
+    }
+
+    private void checkUserNotExists(String username) {
+        if (isExists(username)) {
+            throw new UserAlreadyExistsException();
         }
+    }
+
+    private void setDefaultRole(Users user) {
         if (user.getRoles().isEmpty()) {
             user.getRoles().add("USER");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usersRepository.save(user);
-        new UsernameDto(user.getUsername());
     }
 
     @Override
     public void delete(String username) {
-        Users users = this.usersRepository.findById(username).orElseThrow(() ->
-                new org.springframework.security.core.userdetails.UsernameNotFoundException("User " + username + " not found"));
+        Users users = this.usersRepository.findById(username).orElseThrow(UserNotFoundException::new);
         this.usersRepository.delete(users);
     }
 
