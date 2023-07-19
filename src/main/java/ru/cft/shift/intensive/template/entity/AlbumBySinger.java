@@ -32,6 +32,17 @@ public class AlbumBySinger implements Albums {
         }
     }
 
+    public AlbumBySinger() {
+    }
+
+    public AlbumBySinger(String singerName, String albumName, String genre, String releaseDate, Set<Song> songs) {
+        this.key.singerName = singerName;
+        this.key.albumName = albumName;
+        this.genre = genre;
+        this.releaseDate = releaseDate;
+        this.songs = songs;
+    }
+
     public String getGenre() {
         return genre;
     }
@@ -52,6 +63,14 @@ public class AlbumBySinger implements Albums {
     @Override
     public Set<Song> getSongs() {
         return songs;
+    }
+
+    public void addSong(Song song) {
+        songs.add(song);
+    }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
     }
 
     public void setSongs(Set<Song> songs) {

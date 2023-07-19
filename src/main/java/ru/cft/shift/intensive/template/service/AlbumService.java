@@ -17,4 +17,5 @@ public interface AlbumService {
     void deleteSignerAlbums(String singerName);
     AlbumDto addSong(String albumName, Song song);
     void deleteSong(String albumName, String ownerName, String songName);
+    List<AlbumDto> getAlbumsByGenre(String genre);
 }

@@ -60,4 +60,33 @@ public class Song {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner='" + owner + '\'' +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Song song) {
+            return song.getId() == this.getId() &&
+                    song.getName().equals(this.getName()) &&
+                    song.getOwner().equals(this.getOwner()) &&
+                    song.getDescription().equals(this.getDescription()) &&
+                    song.getDuration() == this.getDuration();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId() + this.getName().hashCode() + this.getOwner().hashCode()
+                + this.getDescription().hashCode() + this.getDuration();
+    }
 }

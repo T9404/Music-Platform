@@ -57,4 +57,5 @@ public class UserController {
     public ResponseEntity<UsernameDto> get(@PathVariable @Size(min = 3, max = 50) String username) {
         return ResponseEntity.ok(new UsernameDto(usersService.findByUsername(username).username()));
     }
+
 }

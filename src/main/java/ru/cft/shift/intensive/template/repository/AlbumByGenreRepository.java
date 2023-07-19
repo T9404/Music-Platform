@@ -12,4 +12,6 @@ public interface AlbumByGenreRepository extends CassandraRepository<AlbumByGenre
     List<AlbumByGenre> findByKey_Genre(String genre);
 
     Optional<AlbumByGenre> findByAlbumNameAndSignerName(String signerName, String albumName);
+
+    Optional<List<AlbumByGenre>> findAllByKey_Genre(String genre);
 }

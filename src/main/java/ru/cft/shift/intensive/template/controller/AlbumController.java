@@ -28,7 +28,7 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.getList());
     }
 
-    @GetMapping("{username}")
+    @GetMapping("getByUsername/{username}")
     public ResponseEntity<List<AlbumDto>> getSignerAlbumsList(@PathVariable @Size(min = 1, max = 50) String username) {
         return ResponseEntity.ok(albumService.getSignerAlbums(username));
     }
@@ -59,6 +59,7 @@ public class AlbumController {
         try {
             return ResponseEntity.ok(albumService.addSong(albumName, song));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -71,7 +72,13 @@ public class AlbumController {
             albumService.deleteSong(albumName, ownerName, songName);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("getByGenre/{genre}")
+    public ResponseEntity<List<AlbumDto>> getAlbumsByGenre(@PathVariable @Size(min = 1, max = 50) String genre) {
+        return ResponseEntity.ok(albumService.getAlbumsByGenre(genre));
     }
 }

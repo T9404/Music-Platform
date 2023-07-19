@@ -13,7 +13,9 @@ import ru.cft.shift.intensive.template.repository.AlbumBySignerRepository;
 import ru.cft.shift.intensive.template.service.AlbumService;
 import ru.cft.shift.intensive.template.service.SignerService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +93,23 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    public List<AlbumDto> getAlbumsByGenre(String genre) {
+        System.out.println("1");
+        List<AlbumByGenre> albums = albumByGenreRepository.findAllByKey_Genre(genre)
+                .orElseThrow(() -> new IllegalArgumentException("Genre not found"));
+        System.out.println("1");
+        // if albumByGenre is null = create new HashSet
+        albums.forEach(albumByGenre -> {
+            if (albumByGenre.getSongs() == null) {
+                albumByGenre.setSongs(new HashSet<>());
+            }
+        });
+        return albums.stream()
+                .map(albumMapper::entityToAlbumDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void deleteSignerAlbums(String singerName) {
         List<AlbumBySinger> albums = albumBySignerRepository.findAllByKey_SingerName(singerName)
                 .orElseThrow(() -> new IllegalArgumentException("Singer not found"));
@@ -103,36 +122,32 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public AlbumDto addSong(String albumName, Song song) {
         AlbumBySinger albumBySinger = getAlbumBySinger(albumName, song.getOwner());
-        albumBySinger.getSongs().add(song);
+        albumBySinger.addSong(song);
         albumBySignerRepository.save(albumBySinger);
-        AlbumByGenre albumByGenre = getAlbumByGenre(albumName, song.getOwner());
-        albumByGenre.getSongs().add(song);
-        albumByGenreRepository.save(albumByGenre);
-        return albumMapper.entityToAlbumDto(albumByGenre);
+        albumByGenreRepository.save(albumMapper.albumBySignerToAlbumByGenre(albumBySinger));
+        return albumMapper.entityToAlbumDto(albumBySinger);
     }
 
     private AlbumBySinger getAlbumBySinger(String albumName, String ownerName) {
-        return albumBySignerRepository
+        AlbumBySinger albumBySinger = albumBySignerRepository
                 .findByKey_SingerNameAndKey_AlbumName(ownerName, albumName)
                 .orElseThrow(() -> new IllegalArgumentException("Album not found"));
-    }
-
-    private AlbumByGenre getAlbumByGenre(String albumName, String ownerName) {
-        return albumByGenreRepository
-                .findByAlbumNameAndSignerName(albumName, ownerName)
-                .orElseThrow(() -> new IllegalArgumentException("Album not found"));
+        if (albumBySinger.getSongs() == null) {
+            albumBySinger.setSongs(new HashSet<>());
+        }
+        return albumBySinger;
     }
 
     @Override
     public void deleteSong(String albumName, String ownerName, String songName) {
         AlbumBySinger albumBySinger = getAlbumBySinger(albumName, ownerName);
         Song song = albumBySinger.getSongs().stream()
-                .filter(s -> s.getName().equals(songName))
+                .filter(name -> name.getName().equals(songName))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Song not found"));
-        albumBySinger.getSongs().remove(song);
+        albumBySinger.removeSong(song);
         albumBySignerRepository.save(albumBySinger);
-        AlbumByGenre albumByGenre = getAlbumByGenre(albumName, ownerName);
+        AlbumByGenre albumByGenre = albumMapper.albumBySignerToAlbumByGenre(albumBySinger);
         albumByGenre.getSongs().remove(song);
         albumByGenreRepository.save(albumByGenre);
     }
