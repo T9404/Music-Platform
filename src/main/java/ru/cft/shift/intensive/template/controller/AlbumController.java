@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.shift.intensive.template.dto.AlbumDto;
 import ru.cft.shift.intensive.template.entity.Album;
+import ru.cft.shift.intensive.template.entity.Song;
 import ru.cft.shift.intensive.template.service.AlbumService;
 
 import java.util.List;
@@ -46,6 +47,28 @@ public class AlbumController {
                                             @PathVariable @Size(min = 1, max = 50) String albumName) {
         try {
             albumService.delete(albumName, singerName);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("addSong/{albumName}")
+    public ResponseEntity<AlbumDto> addSong(@PathVariable @Size(min = 1, max = 50) String albumName,
+                                            @RequestBody @Validated Song song) {
+        try {
+            return ResponseEntity.ok(albumService.addSong(albumName, song));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("deleteSong/{albumName}/{songName}")
+    public ResponseEntity<Void> deleteSong(@RequestParam("ownerName") @Size(min = 1, max = 50) String ownerName,
+                                            @PathVariable @Size(min = 1, max = 50) String albumName,
+                                            @PathVariable @Size(min = 1, max = 50) String songName) {
+        try {
+            albumService.deleteSong(albumName, ownerName, songName);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

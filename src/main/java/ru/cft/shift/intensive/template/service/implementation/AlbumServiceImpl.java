@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.AlbumDto;
-import ru.cft.shift.intensive.template.entity.Album;
-import ru.cft.shift.intensive.template.entity.AlbumByGenre;
-import ru.cft.shift.intensive.template.entity.AlbumBySinger;
-import ru.cft.shift.intensive.template.entity.SignerByName;
+import ru.cft.shift.intensive.template.dto.SongDto;
+import ru.cft.shift.intensive.template.entity.*;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapper;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapperImpl;
 import ru.cft.shift.intensive.template.repository.AlbumByGenreRepository;
@@ -27,7 +25,8 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Autowired
     public AlbumServiceImpl(AlbumByGenreRepository albumByGenreRepository,
-                            AlbumBySignerRepository albumBySignerRepository, @Lazy SignerService signerService) {
+                            AlbumBySignerRepository albumBySignerRepository,
+                            @Lazy SignerService signerService) {
         this.albumByGenreRepository = albumByGenreRepository;
         this.albumBySignerRepository = albumBySignerRepository;
         this.signerService = signerService;
@@ -42,9 +41,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public AlbumDto getAlbum(String albumName, String singerName) {
-        AlbumBySinger albumBySinger = albumBySignerRepository
-                .findByKey_SingerNameAndKey_AlbumName(singerName, albumName)
-                .orElseThrow(() -> new IllegalArgumentException("Album not found"));
+        AlbumBySinger albumBySinger = getAlbumBySinger(albumName, singerName);
         return albumMapper.entityToAlbumDto(albumBySinger);
     }
 
@@ -79,9 +76,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public void delete(String albumName, String singerName) {
-        AlbumBySinger albumBySinger = albumBySignerRepository
-                .findByKey_SingerNameAndKey_AlbumName(singerName, albumName)
-                .orElseThrow(() -> new IllegalArgumentException("Album not found"));
+        AlbumBySinger albumBySinger = getAlbumBySinger(albumName, singerName);
         albumBySignerRepository.delete(albumBySinger);
         albumByGenreRepository.delete(albumMapper.albumBySignerToAlbumByGenre(albumBySinger));
     }
@@ -103,5 +98,42 @@ public class AlbumServiceImpl implements AlbumService {
         albumByGenreRepository.deleteAll(albums.stream()
                 .map(albumMapper::albumBySignerToAlbumByGenre)
                 .collect(Collectors.toList()));
+    }
+
+    @Override
+    public AlbumDto addSong(String albumName, Song song) {
+        AlbumBySinger albumBySinger = getAlbumBySinger(albumName, song.getOwner());
+        albumBySinger.getSongs().add(song);
+        albumBySignerRepository.save(albumBySinger);
+        AlbumByGenre albumByGenre = getAlbumByGenre(albumName, song.getOwner());
+        albumByGenre.getSongs().add(song);
+        albumByGenreRepository.save(albumByGenre);
+        return albumMapper.entityToAlbumDto(albumByGenre);
+    }
+
+    private AlbumBySinger getAlbumBySinger(String albumName, String ownerName) {
+        return albumBySignerRepository
+                .findByKey_SingerNameAndKey_AlbumName(ownerName, albumName)
+                .orElseThrow(() -> new IllegalArgumentException("Album not found"));
+    }
+
+    private AlbumByGenre getAlbumByGenre(String albumName, String ownerName) {
+        return albumByGenreRepository
+                .findByAlbumNameAndSignerName(albumName, ownerName)
+                .orElseThrow(() -> new IllegalArgumentException("Album not found"));
+    }
+
+    @Override
+    public void deleteSong(String albumName, String ownerName, String songName) {
+        AlbumBySinger albumBySinger = getAlbumBySinger(albumName, ownerName);
+        Song song = albumBySinger.getSongs().stream()
+                .filter(s -> s.getName().equals(songName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Song not found"));
+        albumBySinger.getSongs().remove(song);
+        albumBySignerRepository.save(albumBySinger);
+        AlbumByGenre albumByGenre = getAlbumByGenre(albumName, ownerName);
+        albumByGenre.getSongs().remove(song);
+        albumByGenreRepository.save(albumByGenre);
     }
 }
