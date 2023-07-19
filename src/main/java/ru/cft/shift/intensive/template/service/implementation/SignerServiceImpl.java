@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.SignerDto;
 import ru.cft.shift.intensive.template.entity.Album;
-import ru.cft.shift.intensive.template.entity.SignerByName;
+import ru.cft.shift.intensive.template.entity.Signer;
+import ru.cft.shift.intensive.template.exception.SignerAlreadyExistsException;
+import ru.cft.shift.intensive.template.exception.SignerNotFoundException;
 import ru.cft.shift.intensive.template.mapper.signer.SignerMapper;
 import ru.cft.shift.intensive.template.mapper.signer.SignerMapperImpl;
 import ru.cft.shift.intensive.template.repository.SignerByNameRepository;
@@ -46,16 +48,16 @@ public class SignerServiceImpl implements SignerService {
                 .orElseThrow(() -> new IllegalArgumentException("Signer " + signerName + " not found"));
     }
     @Override
-    public SignerDto create(SignerByName signer) throws IllegalArgumentException {
+    public SignerDto create(Signer signer) {
         if (isSignerExists(signer.getName())) {
-            throw new IllegalArgumentException("Signer " + signer.getName() + " already exists");
+            throw new SignerAlreadyExistsException();
         }
         signerByNameRepository.save(signer);
         updateAlbums(signer);
         return signerMapper.entityToSignerDto(signer);
     }
 
-    private void updateAlbums(SignerByName signer) {
+    private void updateAlbums(Signer signer) {
         for (Album album : signer.getAlbums()) {
             if (!albumService.isAlbumExists(album.getName(), signer.getName())) {
                 albumService.create(album);
@@ -64,9 +66,9 @@ public class SignerServiceImpl implements SignerService {
     }
 
     @Override
-    public void delete(String signerName) throws Exception {
-        SignerByName signer = signerByNameRepository.findById(signerName)
-                .orElseThrow(() -> new Exception("Signer " + signerName + " not found"));
+    public void delete(String signerName) {
+        Signer signer = signerByNameRepository.findById(signerName)
+                .orElseThrow(SignerNotFoundException::new);
         albumService.deleteSignerAlbums(signerName);
         signerByNameRepository.delete(signer);
     }

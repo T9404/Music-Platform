@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.cft.shift.intensive.template.dto.AlbumDto;
 import ru.cft.shift.intensive.template.dto.SignerDto;
 import ru.cft.shift.intensive.template.entity.Album;
-import ru.cft.shift.intensive.template.entity.SignerByName;
+import ru.cft.shift.intensive.template.entity.Signer;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapper;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapperImpl;
 
@@ -16,9 +16,9 @@ public class SignerMapperImpl implements SignerMapper {
     private final AlbumMapper albumMapper = new AlbumMapperImpl();
 
     @Override
-    public SignerDto entityToSignerDto(SignerByName signerByName) {
-        return new SignerDto(signerByName.getName(), signerByName.getEmail(),
-                signerByName.getBiography(), albumsToAlbumsDto(signerByName.getAlbums()));
+    public SignerDto entityToSignerDto(Signer signer) {
+        return new SignerDto(signer.getName(), signer.getEmail(),
+                signer.getBiography(), albumsToAlbumsDto(signer.getAlbums()));
     }
 
     private Set<AlbumDto> albumsToAlbumsDto(Set<Album> albums) {

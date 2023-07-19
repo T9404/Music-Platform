@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.AlbumDto;
-import ru.cft.shift.intensive.template.dto.SongDto;
 import ru.cft.shift.intensive.template.entity.*;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapper;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapperImpl;
@@ -15,7 +14,6 @@ import ru.cft.shift.intensive.template.service.SignerService;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,10 +67,10 @@ public class AlbumServiceImpl implements AlbumService {
 
     private void updateSigner(Album album) {
         if (!signerService.isSignerExists(album.getOwner())) {
-            SignerByName signerByName = new SignerByName();
-            signerByName.setName(album.getOwner());
-            signerByName.getAlbums().add(album);
-            signerService.create(signerByName);
+            Signer signer = new Signer();
+            signer.setName(album.getOwner());
+            signer.getAlbums().add(album);
+            signerService.create(signer);
         }
     }
 

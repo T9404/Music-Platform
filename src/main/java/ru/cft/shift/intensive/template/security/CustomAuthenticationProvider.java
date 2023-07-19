@@ -20,7 +20,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails;
         try {
-            userDetails = this.userDetailsService.loadUserByUsername(username);
+            userDetails = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException exception) {
             throw new BadCredentialsException("Bad credentials");
         }

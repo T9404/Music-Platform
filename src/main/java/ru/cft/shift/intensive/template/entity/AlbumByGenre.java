@@ -1,11 +1,18 @@
 package ru.cft.shift.intensive.template.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Table("album_by_genre")
 public class AlbumByGenre implements Albums {
     @PrimaryKey
@@ -17,6 +24,8 @@ public class AlbumByGenre implements Albums {
     @Column("songs")
     private Set<Song> songs = new HashSet<>();
 
+    @NoArgsConstructor
+    @AllArgsConstructor
     @PrimaryKeyClass
     public static class Key {
         @PrimaryKeyColumn(name = "genre", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
@@ -24,37 +33,16 @@ public class AlbumByGenre implements Albums {
         @PrimaryKeyColumn(name = "signer_name", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
         private String signerName;
 
-        public Key() {
-        }
-
         public Key(String genre) {
             this.genre = genre;
         }
     }
 
-    public String getAlbumName() {
-        return albumName;
-    }
-
-    public void setAlbumName(String albumName) {
+    public AlbumByGenre(String genre, String signerName, String albumName, String releaseDate, Set<Song> songs) {
+        key.genre = genre;
+        key.signerName = signerName;
         this.albumName = albumName;
-    }
-
-    @Override
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
-    }
-
-    @Override
-    public Set<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Set<Song> songs) {
         this.songs = songs;
     }
 

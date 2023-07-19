@@ -56,17 +56,17 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication);
-        this.securityContextHolderStrategy.setContext(context);
-        this.securityContextRepository.saveContext(context, request, response);
-        this.successHandler.onAuthenticationSuccess(request, response, authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+        successHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
     private void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws ServletException, IOException {
-        SecurityContext context = this.securityContextHolderStrategy.getContext();
-        this.securityContextHolderStrategy.clearContext();
+        SecurityContext context = securityContextHolderStrategy.getContext();
+        securityContextHolderStrategy.clearContext();
         context.setAuthentication(null);
-        this.failureHandler.onAuthenticationFailure(request, response, exception);
+        failureHandler.onAuthenticationFailure(request, response, exception);
     }
 
     protected Authentication obtainBody(HttpServletRequest request) {
@@ -84,7 +84,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
     }
 
     private boolean notRequiredAuthenticationRequestMatcher(HttpServletRequest request) {
-        return !this.processAuthenticationRequestMatcher.matches(request);
+        return !processAuthenticationRequestMatcher.matches(request);
     }
 
     public void setProcessAuthenticationRequestMatcher(RequestMatcher processAuthenticationRequestMatcher) {

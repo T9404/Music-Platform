@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.shift.intensive.template.dto.SignerDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
-import ru.cft.shift.intensive.template.entity.SignerByName;
+import ru.cft.shift.intensive.template.entity.Signer;
 import ru.cft.shift.intensive.template.service.SignerService;
 import ru.cft.shift.intensive.template.service.UsersService;
 
@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     @PostMapping("signer")
-    public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid SignerByName signer) {
+    public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid Signer signer) {
         try {
             return ResponseEntity.ok(signerService.create(signer));
         } catch (Exception e) {

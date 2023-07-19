@@ -1,20 +1,14 @@
 package ru.cft.shift.intensive.template.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthStatus {
     private String status;
-
-    public AuthStatus() {
-    }
-
-    public AuthStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
