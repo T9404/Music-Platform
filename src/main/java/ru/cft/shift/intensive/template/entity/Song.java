@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @UserDefinedType("song")
 public class Song {
-    private UUID id;
+    private int id;
     private String name;
     private String owner;
     private String description;
