@@ -8,28 +8,31 @@ import ru.cft.shift.intensive.template.entity.AlbumByGenre;
 import ru.cft.shift.intensive.template.entity.AlbumBySinger;
 import ru.cft.shift.intensive.template.entity.Song;
 
+import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class AlbumMapperImpl implements AlbumMapper {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Override
     public AlbumDto entityToAlbumDto(AlbumByGenre album) {
-        return new AlbumDto(album.getAlbumName(), album.getReleaseDate(), album.getSignerName(), album.getGenre(),
-                songsToSongsDto(album.getSongs()));
+        return new AlbumDto(album.getAlbumName(), convert(album.getReleaseDate()), album.getSignerName(),
+                album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
     @Override
     public AlbumDto entityToAlbumDto(AlbumBySinger album) {
-        return new AlbumDto(album.getAlbumName(), album.getReleaseDate(), album.getSingerName(), album.getGenre(),
-                songsToSongsDto(album.getSongs()));
+        return new AlbumDto(album.getAlbumName(), convert(album.getReleaseDate()), album.getSingerName(),
+                album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
     @Override
     public AlbumDto entityToAlbumDto(Album album) {
-        return new AlbumDto(album.getName(), album.getReleaseDate(), album.getOwner(), album.getGenre(),
-                songsToSongsDto(album.getSongs()));
+        return new AlbumDto(album.getName(), convert(album.getReleaseDate()), album.getOwner(),
+                album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
     private Set<SongDto> songsToSongsDto(Set<Song> songs) {
@@ -69,5 +72,9 @@ public class AlbumMapperImpl implements AlbumMapper {
         albumByGenre.setSongs(album.getSongs());
         albumByGenre.setReleaseDate(album.getReleaseDate());
         return albumByGenre;
+    }
+
+    private String convert(Timestamp timestamp) {
+        return timestamp.toLocalDateTime().format(FORMATTER);
     }
 }

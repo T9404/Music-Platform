@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +20,6 @@ public class Album {
     private String name;
     private String genre;
     private String owner;
-    private String releaseDate;
+    private Timestamp releaseDate;
     private Set<Song> songs = new HashSet<>();
 }

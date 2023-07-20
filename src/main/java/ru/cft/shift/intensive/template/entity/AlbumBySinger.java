@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.*;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class AlbumBySinger implements Albums {
     @Column
     private String genre;
     @Column("release_date")
-    private String releaseDate;
+    private Timestamp releaseDate;
     @Column("songs")
     private Set<Song> songs = new HashSet<>();
 
@@ -35,7 +36,7 @@ public class AlbumBySinger implements Albums {
         }
     }
 
-    public AlbumBySinger(String singerName, String albumName, String genre, String releaseDate, Set<Song> songs) {
+    public AlbumBySinger(String singerName, String albumName, String genre, Timestamp releaseDate, Set<Song> songs) {
         this.key.singerName = singerName;
         this.key.albumName = albumName;
         this.genre = genre;
