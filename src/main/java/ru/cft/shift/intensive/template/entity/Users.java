@@ -7,9 +7,8 @@ import lombok.Setter;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+import ru.cft.shift.intensive.template.enumeration.PersonRole;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,5 +23,9 @@ public class Users {
     @Column
     private String email;
     @Column
-    private Set<String> roles = new HashSet<>();
+    private String role;
+
+    public void setRole(PersonRole role) {
+        this.role = role.getRole();
+    }
 }

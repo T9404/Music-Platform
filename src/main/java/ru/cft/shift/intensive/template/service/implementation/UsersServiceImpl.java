@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.UserDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
+import ru.cft.shift.intensive.template.enumeration.PersonRole;
 import ru.cft.shift.intensive.template.exception.UserAlreadyExistsException;
 import ru.cft.shift.intensive.template.exception.UserNotFoundException;
 import ru.cft.shift.intensive.template.repository.UsersRepository;
@@ -35,7 +36,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
     public UserDto findByUsername(String username) {
         return this.usersRepository.findById(username)
-                .map(user -> new UserDto(user.getUsername(), user.getPassword(), user.getEmail(), user.getRoles()))
+                .map(user -> new UserDto(user.getUsername(), user.getPassword(), user.getEmail(), user.getRole()))
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -60,8 +61,8 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     }
 
     private void setDefaultRole(Users user) {
-        if (user.getRoles().isEmpty()) {
-            user.getRoles().add("USER");
+        if (user.getRole() == null) {
+            user.setRole(PersonRole.USER);
         }
     }
 
@@ -77,7 +78,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
         return User.builder()
                 .username(userDto.username())
                 .password(userDto.password())
-                .roles(userDto.roles().toArray(String[]::new))
+                .roles(userDto.role())
                 .build();
     }
 }

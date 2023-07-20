@@ -45,7 +45,7 @@ public class SignerServiceImpl implements SignerService {
     public SignerDto findBySignerName(String signerName) {
         return signerRepository.findById(signerName)
                 .map(signerMapper::entityToSignerDto)
-                .orElseThrow(() -> new IllegalArgumentException("Signer " + signerName + " not found"));
+                .orElseThrow(SignerNotFoundException::new);
     }
 
     @Override
