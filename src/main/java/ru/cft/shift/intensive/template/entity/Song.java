@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.datastax.oss.driver.api.core.uuid.Uuids;
+import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
+
 
 import java.util.UUID;
 
@@ -14,7 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @UserDefinedType("song")
 public class Song {
-    private int id;
+    @CassandraType(type = CassandraType.Name.UUID)
+    private UUID id = Uuids.timeBased();
     private String name;
     private String owner;
     private String description;

@@ -1,6 +1,6 @@
 spring:
   cassandra:
-    keyspace-name: test21
+    keyspace-name: test321
     username: cassandra
     password: cassandra
     schema-action: create_if_not_exists
