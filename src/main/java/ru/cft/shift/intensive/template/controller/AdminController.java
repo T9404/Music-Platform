@@ -58,8 +58,4 @@ public class AdminController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    // добавить остальное
 }
-
-// сделать здесь добавление signer, вместо user

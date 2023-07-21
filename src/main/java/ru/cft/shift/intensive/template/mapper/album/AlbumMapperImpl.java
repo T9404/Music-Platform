@@ -19,19 +19,19 @@ public class AlbumMapperImpl implements AlbumMapper {
 
     @Override
     public AlbumDto entityToAlbumDto(AlbumByGenre album) {
-        return new AlbumDto(album.getAlbumName(), convert(album.getReleaseDate()), album.getSignerName(),
+        return new AlbumDto(album.getAlbumName(), formatTime(album.getReleaseDate()), album.getSignerName(),
                 album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
     @Override
     public AlbumDto entityToAlbumDto(AlbumBySinger album) {
-        return new AlbumDto(album.getAlbumName(), convert(album.getReleaseDate()), album.getSingerName(),
+        return new AlbumDto(album.getAlbumName(), formatTime(album.getReleaseDate()), album.getSingerName(),
                 album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
     @Override
     public AlbumDto entityToAlbumDto(Album album) {
-        return new AlbumDto(album.getName(), convert(album.getReleaseDate()), album.getOwner(),
+        return new AlbumDto(album.getName(), formatTime(album.getReleaseDate()), album.getOwner(),
                 album.getGenre(), songsToSongsDto(album.getSongs()));
     }
 
@@ -74,7 +74,7 @@ public class AlbumMapperImpl implements AlbumMapper {
         return albumByGenre;
     }
 
-    private String convert(Timestamp timestamp) {
+    private String formatTime(Timestamp timestamp) {
         return timestamp.toLocalDateTime().format(FORMATTER);
     }
 }
