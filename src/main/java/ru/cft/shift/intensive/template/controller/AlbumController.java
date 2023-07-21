@@ -1,7 +1,13 @@
 package ru.cft.shift.intensive.template.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +47,7 @@ public class AlbumController {
     @DeleteMapping("{albumName}")
     public ResponseEntity<Void> deleteAlbum(@RequestParam("singerName") @Size(min = 1, max = 50) String singerName,
                                             @PathVariable @Size(min = 1, max = 50) String albumName) {
-        albumService.delete(albumName, singerName);
+        albumService.deleteAlbum(albumName, singerName);
         return ResponseEntity.ok().build();
     }
 
@@ -59,6 +65,11 @@ public class AlbumController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Get a list of albums by genre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of albums by genre"),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+    })
     @GetMapping("getByGenre/{genre}")
     public ResponseEntity<List<AlbumDto>> getAlbumsByGenre(@PathVariable @Size(min = 1, max = 50) String genre) {
         return ResponseEntity.ok(albumService.getAlbumsByGenre(genre));

@@ -1,6 +1,5 @@
 package ru.cft.shift.intensive.template.entity;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

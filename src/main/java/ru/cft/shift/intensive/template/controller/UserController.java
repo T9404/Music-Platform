@@ -37,6 +37,7 @@ public class UserController {
     @Operation(summary = "api.user.create.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.user.create.api-responses.200.description"),
+            @ApiResponse(responseCode = "409", description = "api.user.create.api-responses.409.description", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
             @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @PostMapping()

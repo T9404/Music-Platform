@@ -44,12 +44,6 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public AlbumDto getAlbum(String albumName, String singerName) {
-        AlbumBySinger albumBySinger = getAlbumBySinger(albumName, singerName);
-        return albumMapper.entityToAlbumDto(albumBySinger);
-    }
-
-    @Override
     public boolean isAlbumExists(String albumName, String singerName) {
         return albumBySignerRepository
                 .findByKey_SingerNameAndKey_AlbumName(singerName, albumName)
@@ -71,12 +65,12 @@ public class AlbumServiceImpl implements AlbumService {
         }
     }
 
-    private void saveAlbumByGenre(Album album) {
-        albumByGenreRepository.save(albumMapper.albumToAlbumByGenre(album));
-    }
-
     private void saveAlbumBySigner(Album album) {
         albumBySignerRepository.save(albumMapper.albumToAlbumBySinger(album));
+    }
+
+    private void saveAlbumByGenre(Album album) {
+        albumByGenreRepository.save(albumMapper.albumToAlbumByGenre(album));
     }
 
     private void updateIfSignerNotExist(Album album) {
@@ -94,7 +88,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void delete(String albumName, String singerName) {
+    public void deleteAlbum(String albumName, String singerName) {
         AlbumBySinger albumBySinger = getAlbumBySinger(albumName, singerName);
         albumBySignerRepository.delete(albumBySinger);
         albumByGenreRepository.delete(albumMapper.albumBySignerToAlbumByGenre(albumBySinger));

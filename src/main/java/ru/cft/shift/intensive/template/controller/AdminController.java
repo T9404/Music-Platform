@@ -50,12 +50,7 @@ public class AdminController {
 
     @DeleteMapping("deleteSigner/{signerName}")
     public ResponseEntity<Void> deleteSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
-        try {
-            System.out.println("ok");
-            signerService.delete(signerName);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        signerService.delete(signerName);
+        return ResponseEntity.ok().build();
     }
 }

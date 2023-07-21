@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
 @RestControllerAdvice
 public class ErrorControllerAdvice {
     private static final Logger log = LoggerFactory.getLogger(ErrorControllerAdvice.class);
-
     private final PropertyResolverUtils propertyResolverUtils;
 
     @Autowired

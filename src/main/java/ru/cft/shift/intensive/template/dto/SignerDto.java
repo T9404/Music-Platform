@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-
 public record SignerDto(@NotEmpty @Size(min = 3, max = 50) String name,
                         @Email String email,
                         String biography,
