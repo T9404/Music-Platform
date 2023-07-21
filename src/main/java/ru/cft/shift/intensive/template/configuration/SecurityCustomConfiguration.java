@@ -15,7 +15,7 @@ public class SecurityCustomConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/albums/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/albums/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
