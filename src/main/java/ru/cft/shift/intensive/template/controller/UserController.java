@@ -37,8 +37,12 @@ public class UserController {
     @Operation(summary = "api.user.create.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.user.create.api-responses.200.description"),
-            @ApiResponse(responseCode = "409", description = "api.user.create.api-responses.409.description", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "409", description = "api.user.create.api-responses.409.description",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @PostMapping()
     public ResponseEntity<UsernameDto> create(@RequestBody @Valid Users user) {
@@ -49,10 +53,12 @@ public class UserController {
     @Operation(summary = "api.user.get.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.get.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.user.get.api-responses.404.description", content =
-                    {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content =
-                    {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "404", description = "api.user.get.api-responses.404.description",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("{username}")
     public ResponseEntity<UsernameDto> get(@PathVariable @Size(min = 3, max = 50) String username) {
@@ -62,8 +68,12 @@ public class UserController {
     @Operation(summary = "api.signer.get.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.get.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.signer.get.api-responses.404.description", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "404", description = "api.signer.get.api-responses.404.description",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("signer/{signerName}")
     public ResponseEntity<SignerDto> getSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {

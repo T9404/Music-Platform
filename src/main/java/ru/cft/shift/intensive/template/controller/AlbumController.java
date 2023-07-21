@@ -34,7 +34,9 @@ public class AlbumController {
     @Operation(summary = "api.albums.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.albums.api-responses.200.description"),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping()
     public ResponseEntity<List<AlbumDto>> getAlbumsList() {
@@ -44,8 +46,12 @@ public class AlbumController {
     @Operation(summary = "api.albums.signer.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.albums.signer.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.albums.signer.api-responses.404.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "404", description = "api.albums.signer.api-responses.404.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("getByUsername/{username}")
     public ResponseEntity<List<AlbumDto>> getSignerAlbumsList(@PathVariable @Size(min = 1, max = 50) String username) {
@@ -55,8 +61,12 @@ public class AlbumController {
     @Operation(summary = "api.album.post.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.album.post.api-responses.200.description"),
-            @ApiResponse(responseCode = "409", description = "api.album.post.api-responses.409.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "409", description = "api.album.post.api-responses.409.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @PostMapping()
     public ResponseEntity<AlbumDto> createAlbum(@RequestBody @Validated Album album) {
@@ -66,8 +76,12 @@ public class AlbumController {
     @Operation(summary = "api.album.delete.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.album.delete.api-responses.200.description"),
-            @ApiResponse(responseCode = "409", description = "api.album.delete.api-responses.409.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "409", description = "api.album.delete.api-responses.409.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @DeleteMapping("{albumName}")
     public ResponseEntity<Void> deleteAlbum(@RequestParam("singerName") @Size(min = 1, max = 50) String singerName,
@@ -79,8 +93,12 @@ public class AlbumController {
     @Operation(summary = "api.album.song.post.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.album.song.post.api-responses.200.description"),
-            @ApiResponse(responseCode = "409", description = "api.album.song.post.api-responses.409.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "409", description = "api.album.song.post.api-responses.409.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @PostMapping("addSong/{albumName}")
     public ResponseEntity<AlbumDto> addSong(@PathVariable @Size(min = 1, max = 50) String albumName,
@@ -91,8 +109,12 @@ public class AlbumController {
     @Operation(summary = "api.album.song.delete.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.album.song.delete.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.album.song.delete.api-responses.404.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "404", description = "api.album.song.delete.api-responses.404.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @DeleteMapping("deleteSong/{albumName}/{songName}")
     public ResponseEntity<Void> deleteSong(@RequestParam("ownerName") @Size(min = 1, max = 50) String ownerName,
@@ -105,8 +127,12 @@ public class AlbumController {
     @Operation(summary = "api.album.get.operation.summary")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "api.album.get.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.album.api-responses.404.description", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "api.server.error", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
+            @ApiResponse(responseCode = "404", description = "api.album.api-responses.404.description",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "api.server.error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("getByGenre/{genre}")
     public ResponseEntity<List<AlbumDto>> getAlbumsByGenre(@PathVariable @Size(min = 1, max = 50) String genre) {

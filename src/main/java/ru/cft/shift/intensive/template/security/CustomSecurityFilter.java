@@ -37,7 +37,8 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
     private SecurityContextRepository securityContextRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         if (notRequiredAuthenticationRequestMatcher(request)) {
             filterChain.doFilter(request, response);
             return;
