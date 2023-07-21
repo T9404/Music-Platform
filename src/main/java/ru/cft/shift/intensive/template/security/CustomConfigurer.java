@@ -19,7 +19,7 @@ public class CustomConfigurer<B extends HttpSecurityBuilder<B>, T extends Custom
     @Override
     public void init(B builder) throws Exception {
         super.init(builder);
-        this.securityFilter = new CustomSecurityFilter();
+        securityFilter = new CustomSecurityFilter();
     }
 
     @Override
@@ -34,9 +34,9 @@ public class CustomConfigurer<B extends HttpSecurityBuilder<B>, T extends Custom
         AuthenticationManagerBuilder authenticationManagerBuilder = builder.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(authenticationProvider);
 
-        this.securityFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
-        this.securityFilter.setSecurityContextRepository(builder.getSharedObject(SecurityContextRepository.class));
-        this.securityFilter.setProcessAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
-        builder.addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class);
+        securityFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
+        securityFilter.setSecurityContextRepository(builder.getSharedObject(SecurityContextRepository.class));
+        securityFilter.setProcessAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
+        builder.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

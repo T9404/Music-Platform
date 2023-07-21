@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface UsersService {
     List<UsernameDto> list();
-
     UserDto findByUsername(String username);
     boolean isExists(String username);
-
-    void create(Users user);
-
+    UsernameDto create(Users user);
     void delete(String username);
 }

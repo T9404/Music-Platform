@@ -7,24 +7,24 @@ import lombok.Setter;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
-import ru.cft.shift.intensive.template.enumeration.PersonRole;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("users")
-public class Users {
+@Table("signer_by_name")
+public class Signer {
     @PrimaryKey
-    private String username;
+    private String name;
     @Column
-    private String password;
+    private String biography;
     @Column
     private String email;
     @Column
-    private String role;
-
-    public void setRole(PersonRole role) {
-        this.role = role.getRole();
-    }
+    private String password;
+    @Column
+    private Set<Album> albums = new HashSet<>();
 }
