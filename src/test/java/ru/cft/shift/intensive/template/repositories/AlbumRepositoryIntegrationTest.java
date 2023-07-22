@@ -114,7 +114,8 @@ public class AlbumRepositoryIntegrationTest {
         album2.setSongs(null);
         albumByGenreRepository.save(album2);
 
-        Optional<List<AlbumByGenre>> allAlbumsByGenre = Optional.ofNullable(albumByGenreRepository.findAllByKey_Genre("example"));
+        Optional<List<AlbumByGenre>> allAlbumsByGenre =
+                Optional.ofNullable(albumByGenreRepository.findAllByKey_Genre("example"));
         assertTrue(allAlbumsByGenre.isPresent());
         assertEquals("album2", allAlbumsByGenre.get().get(0).getAlbumName());
         assertEquals("album1", allAlbumsByGenre.get().get(1).getAlbumName());

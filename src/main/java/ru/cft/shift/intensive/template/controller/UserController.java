@@ -61,7 +61,7 @@ public class UserController {
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("{username}")
-    public ResponseEntity<UsernameDto> get(@PathVariable @Size(min = 3, max = 50) String username) {
+    public ResponseEntity<UsernameDto> getUser(@PathVariable @Size(min = 3, max = 50) String username) {
         return ResponseEntity.ok(new UsernameDto(usersService.findByUsername(username).username()));
     }
 

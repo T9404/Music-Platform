@@ -68,7 +68,8 @@ public class SignerRepositoryIntegrationTest {
         signerRepository.save(signer);
 
         Optional<Signer> retrievedSignerOptional = signerRepository.findById("test");
-        Signer retrievedSigner = retrievedSignerOptional.orElseThrow(() -> new AssertionError("Signer not found"));
+        Signer retrievedSigner = retrievedSignerOptional.orElseThrow(() ->
+                new AssertionError("Signer not found"));
 
         assertEquals("test", retrievedSigner.getName());
         assertNotEquals(passwordEncoder.encode("test"), retrievedSigner.getPassword());
