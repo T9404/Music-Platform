@@ -11,8 +11,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.cft.shift.intensive.template.exception.DefaultException;
-import ru.cft.shift.intensive.template.exception.UsernameNotFoundException;
+import ru.cft.shift.intensive.template.exception.*;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -22,7 +21,6 @@ import java.util.stream.IntStream;
 @RestControllerAdvice
 public class ErrorControllerAdvice {
     private static final Logger log = LoggerFactory.getLogger(ErrorControllerAdvice.class);
-
     private final PropertyResolverUtils propertyResolverUtils;
 
     @Autowired
@@ -41,6 +39,31 @@ public class ErrorControllerAdvice {
         return handleCustomException(exception, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(SignerAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleSignerAlreadyExistsException(SignerAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(SignerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSignerNotFoundException(SignerNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AlbumAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumAlreadyExistsException(AlbumAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AlbumNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumNotFoundException(AlbumNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SongNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSongNotFoundException(SongNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         return handleBindValidationException(exception);
@@ -49,6 +72,16 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception) {
         return handleCustomException(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException exception) {
+        return handleCustomException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
+        return handleCustomException(exception, HttpStatus.CONFLICT);
     }
 
     public record ErrorResponse(LocalDateTime timestamp, String message, int code) {

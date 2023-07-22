@@ -1,11 +1,12 @@
 spring:
   cassandra:
-    keyspace-name: T9404
+    keyspace-name: example
     username: cassandra
     password: cassandra
     schema-action: create_if_not_exists
     local-datacenter: datacenter1
     contact-points: 127.0.0.1:9042
+
 springdoc:
   use-management-port: true
 

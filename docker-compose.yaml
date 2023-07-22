@@ -2,7 +2,7 @@ version: "3.9"
 services:
   cassandra:
     image: 'cassandra:4.1.2'
-    container_name: my_keyspace
+    container_name: example
     environment:
       - 'CASSANDRA_DC=dc1'
       - 'CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch'

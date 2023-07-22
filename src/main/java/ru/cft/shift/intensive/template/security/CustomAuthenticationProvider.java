@@ -1,4 +1,4 @@
-package ru.cft.shift.intensive.template.configuration.security;
+package ru.cft.shift.intensive.template.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,11 +20,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails;
         try {
-            System.out.println("username: " + username + " I try to load user by username");
-            userDetails = this.userDetailsService.loadUserByUsername(username);
-            System.out.println("userDetails: " + userDetails.getUsername());
+            userDetails = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException exception) {
-            System.out.println("UsernameNotFoundException");
             throw new BadCredentialsException("Bad credentials");
         }
 
@@ -32,7 +29,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad credentials");
         }
 
-        UsernamePasswordAuthenticationToken result = UsernamePasswordAuthenticationToken.authenticated(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken result = UsernamePasswordAuthenticationToken.authenticated(userDetails,
+                authentication.getCredentials(), userDetails.getAuthorities());
         result.setDetails(authentication.getDetails());
         return result;
     }

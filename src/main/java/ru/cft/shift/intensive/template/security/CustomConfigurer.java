@@ -1,4 +1,4 @@
-package ru.cft.shift.intensive.template.configuration.security;
+package ru.cft.shift.intensive.template.security;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.SecurityContextConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,7 +19,7 @@ public class CustomConfigurer<B extends HttpSecurityBuilder<B>, T extends Custom
     @Override
     public void init(B builder) throws Exception {
         super.init(builder);
-        this.securityFilter = new CustomSecurityFilter();
+        securityFilter = new CustomSecurityFilter();
     }
 
     @Override
@@ -35,9 +34,9 @@ public class CustomConfigurer<B extends HttpSecurityBuilder<B>, T extends Custom
         AuthenticationManagerBuilder authenticationManagerBuilder = builder.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(authenticationProvider);
 
-        this.securityFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
-        this.securityFilter.setSecurityContextRepository(builder.getSharedObject(SecurityContextRepository.class));
-        this.securityFilter.setProcessAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
-        builder.addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class);
+        securityFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
+        securityFilter.setSecurityContextRepository(builder.getSharedObject(SecurityContextRepository.class));
+        securityFilter.setProcessAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
+        builder.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
