@@ -9,6 +9,7 @@ import org.springframework.data.cassandra.core.mapping.*;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -36,6 +37,22 @@ public class AlbumByGenre implements Albums {
 
         public Key(String genre) {
             this.genre = genre;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Key key))  {
+                return false;
+            }
+            return Objects.equals(genre, key.genre);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(genre);
         }
     }
 

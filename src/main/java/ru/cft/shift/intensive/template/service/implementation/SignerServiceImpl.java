@@ -2,6 +2,7 @@ package ru.cft.shift.intensive.template.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.cft.shift.intensive.template.dto.SignerDto;
 import ru.cft.shift.intensive.template.entity.Album;
@@ -21,12 +22,14 @@ import java.util.stream.Collectors;
 public class SignerServiceImpl implements SignerService {
     private final SignerRepository signerRepository;
     private final AlbumService albumService;
+    private final PasswordEncoder passwordEncoder;
     private final SignerMapper signerMapper = new SignerMapperImpl();
 
     @Autowired
-    public SignerServiceImpl(SignerRepository signerRepository, @Lazy AlbumService albumService) {
+    public SignerServiceImpl(SignerRepository signerRepository, @Lazy AlbumService albumService, PasswordEncoder passwordEncoder) {
         this.signerRepository = signerRepository;
         this.albumService = albumService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -51,6 +54,7 @@ public class SignerServiceImpl implements SignerService {
     @Override
     public SignerDto create(Signer signer) {
         checkSignerNotExists(signer.getName());
+        signer.setPassword(passwordEncoder.encode(signer.getPassword()));
         saveSigner(signer);
         updateAlbums(signer);
         return signerMapper.entityToSignerDto(signer);
