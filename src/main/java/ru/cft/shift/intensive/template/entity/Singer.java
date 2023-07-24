@@ -15,8 +15,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("signer_by_name")
-public class Signer {
+@Table("singer_by_name")
+public class Singer {
     @PrimaryKey
     private String name;
     @Column

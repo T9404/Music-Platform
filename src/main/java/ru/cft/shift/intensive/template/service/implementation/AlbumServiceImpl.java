@@ -7,14 +7,14 @@ import ru.cft.shift.intensive.template.dto.AlbumDto;
 import ru.cft.shift.intensive.template.entity.*;
 import ru.cft.shift.intensive.template.exception.AlbumAlreadyExistsException;
 import ru.cft.shift.intensive.template.exception.AlbumNotFoundException;
-import ru.cft.shift.intensive.template.exception.SignerNotFoundException;
+import ru.cft.shift.intensive.template.exception.SingerNotFoundException;
 import ru.cft.shift.intensive.template.exception.SongNotFoundException;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapper;
 import ru.cft.shift.intensive.template.mapper.album.AlbumMapperImpl;
 import ru.cft.shift.intensive.template.repository.AlbumByGenreRepository;
 import ru.cft.shift.intensive.template.repository.AlbumBySignerRepository;
 import ru.cft.shift.intensive.template.service.AlbumService;
-import ru.cft.shift.intensive.template.service.SignerService;
+import ru.cft.shift.intensive.template.service.SingerService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -24,16 +24,16 @@ import java.util.stream.Collectors;
 public class AlbumServiceImpl implements AlbumService {
     private final AlbumByGenreRepository albumByGenreRepository;
     private final AlbumBySignerRepository albumBySignerRepository;
-    private final SignerService signerService;
+    private final SingerService singerService;
     private final AlbumMapper albumMapper = new AlbumMapperImpl();
 
     @Autowired
     public AlbumServiceImpl(AlbumByGenreRepository albumByGenreRepository,
                             AlbumBySignerRepository albumBySignerRepository,
-                            @Lazy SignerService signerService) {
+                            @Lazy SingerService singerService) {
         this.albumByGenreRepository = albumByGenreRepository;
         this.albumBySignerRepository = albumBySignerRepository;
-        this.signerService = signerService;
+        this.singerService = singerService;
     }
 
     @Override
@@ -74,17 +74,17 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     private void updateIfSignerNotExist(Album album) {
-        if (!signerService.isSignerExists(album.getOwner())) {
-            Signer signer = setAssociationToSigner(album);
-            signerService.create(signer);
+        if (!singerService.isSignerExists(album.getOwner())) {
+            Singer singer = setAssociationToSigner(album);
+            singerService.create(singer);
         }
     }
 
-    private Signer setAssociationToSigner(Album album) {
-        Signer signer = new Signer();
-        signer.setName(album.getOwner());
-        signer.getAlbums().add(album);
-        return signer;
+    private Singer setAssociationToSigner(Album album) {
+        Singer singer = new Singer();
+        singer.setName(album.getOwner());
+        singer.getAlbums().add(album);
+        return singer;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<AlbumDto> getSignerAlbums(String singerName) {
         return albumBySignerRepository.findAllByKey_SingerName(singerName)
-                .orElseThrow(SignerNotFoundException::new)
+                .orElseThrow(SingerNotFoundException::new)
                 .stream()
                 .map(albumMapper::entityToAlbumDto)
                 .collect(Collectors.toList());
@@ -123,7 +123,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteSignerAlbums(String singerName) {
         List<AlbumBySinger> albums = albumBySignerRepository.findAllByKey_SingerName(singerName)
-                .orElseThrow(SignerNotFoundException::new);
+                .orElseThrow(SingerNotFoundException::new);
         albumBySignerRepository.deleteAll(albums);
         albumByGenreRepository.deleteAll(albums.stream()
                 .map(albumMapper::albumBySignerToAlbumByGenre)

@@ -1,4 +1,4 @@
-CREATE TABLE example.signer_by_name
+CREATE TABLE example.singer_by_name
 (
     name       TEXT PRIMARY KEY,
     biography  TEXT,

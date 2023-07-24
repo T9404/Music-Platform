@@ -39,13 +39,13 @@ public class ErrorControllerAdvice {
         return handleCustomException(exception, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(SignerAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleSignerAlreadyExistsException(SignerAlreadyExistsException exception) {
+    @ExceptionHandler(SingerAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleSignerAlreadyExistsException(SingerAlreadyExistsException exception) {
         return handleCustomException(exception, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(SignerNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleSignerNotFoundException(SignerNotFoundException exception) {
+    @ExceptionHandler(SingerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSignerNotFoundException(SingerNotFoundException exception) {
         return handleCustomException(exception, HttpStatus.NOT_FOUND);
     }
 

@@ -13,10 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.cft.shift.intensive.template.dto.SignerDto;
+import ru.cft.shift.intensive.template.dto.SingerDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
-import ru.cft.shift.intensive.template.entity.Signer;
-import ru.cft.shift.intensive.template.service.SignerService;
+import ru.cft.shift.intensive.template.entity.Singer;
+import ru.cft.shift.intensive.template.service.SingerService;
 import ru.cft.shift.intensive.template.service.UsersService;
 
 import java.util.List;
@@ -27,12 +27,12 @@ import java.util.List;
 @Tag(name = "api.admin.tag.name", description = "api.admin.tag.description")
 public class AdminController {
     private final UsersService usersService;
-    private final SignerService signerService;
+    private final SingerService singerService;
 
     @Autowired
-    public AdminController(UsersService usersService, SignerService signerService) {
+    public AdminController(UsersService usersService, SingerService singerService) {
         this.usersService = usersService;
-        this.signerService = signerService;
+        this.singerService = singerService;
     }
 
     @Operation(summary = "api.admin.users.operation.summary")
@@ -63,46 +63,46 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "api.admin.signers.operation.summary")
+    @Operation(summary = "api.admin.singers.operation.summary")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "api.admin.signers.api-responses.200.description"),
+            @ApiResponse(responseCode = "200", description = "api.admin.singers.api-responses.200.description"),
             @ApiResponse(responseCode = "500", description = "api.server.error",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
-    @GetMapping("signers")
-    public ResponseEntity<List<SignerDto>> getSignersList() {
-        return ResponseEntity.ok(signerService.getList());
+    @GetMapping("singers")
+    public ResponseEntity<List<SingerDto>> getSignersList() {
+        return ResponseEntity.ok(singerService.getList());
     }
 
-    @Operation(summary = "api.admin.signer.create.operation.summary")
+    @Operation(summary = "api.admin.singer.create.operation.summary")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "api.admin.signer.create.api-responses.200.description"),
-            @ApiResponse(responseCode = "409", description = "api.admin.signer.create.api-responses.409.description",
+            @ApiResponse(responseCode = "200", description = "api.admin.singer.create.api-responses.200.description"),
+            @ApiResponse(responseCode = "409", description = "api.admin.singer.create.api-responses.409.description",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
             @ApiResponse(responseCode = "500", description = "api.server.error",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
-    @PostMapping("signer")
-    public ResponseEntity<SignerDto> createSigner(@RequestBody @Valid Signer signer) {
-        return ResponseEntity.ok(signerService.create(signer));
+    @PostMapping("singer")
+    public ResponseEntity<SingerDto> createSigner(@RequestBody @Valid Singer singer) {
+        return ResponseEntity.ok(singerService.create(singer));
     }
 
-    @Operation(summary = "api.admin.signer.delete.operation.summary")
+    @Operation(summary = "api.admin.singer.delete.operation.summary")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "api.admin.signer.delete.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.admin.signer.delete.api-responses.404.description",
+            @ApiResponse(responseCode = "200", description = "api.admin.singer.delete.api-responses.200.description"),
+            @ApiResponse(responseCode = "404", description = "api.admin.singer.delete.api-responses.404.description",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
             @ApiResponse(responseCode = "500", description = "api.server.error",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
-    @DeleteMapping("deleteSigner/{signerName}")
-    public ResponseEntity<Void> deleteSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
-        signerService.delete(signerName);
+    @DeleteMapping("deleteSinger/{singerName}")
+    public ResponseEntity<Void> deleteSigner(@PathVariable @Size(min = 3, max = 50) String singerName) {
+        singerService.delete(singerName);
         return ResponseEntity.ok().build();
     }
 }

@@ -13,7 +13,7 @@ import ru.cft.shift.intensive.template.exception.AlbumAlreadyExistsException;
 import ru.cft.shift.intensive.template.repository.AlbumByGenreRepository;
 import ru.cft.shift.intensive.template.repository.AlbumBySignerRepository;
 import ru.cft.shift.intensive.template.service.AlbumService;
-import ru.cft.shift.intensive.template.service.SignerService;
+import ru.cft.shift.intensive.template.service.SingerService;
 import ru.cft.shift.intensive.template.service.implementation.AlbumServiceImpl;
 
 import java.sql.Timestamp;
@@ -32,13 +32,13 @@ public class AlbumServiceImplTest {
     private AlbumBySignerRepository albumBySignerRepository;
 
     @MockBean
-    private SignerService signerService;
+    private SingerService singerService;
 
     private AlbumService albumService;
 
     @BeforeEach
     public void setUp() {
-        albumService = new AlbumServiceImpl(albumByGenreRepository, albumBySignerRepository, signerService);
+        albumService = new AlbumServiceImpl(albumByGenreRepository, albumBySignerRepository, singerService);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class AlbumServiceImplTest {
                 "2020-01-01 00:00:00.000000");
         when(albumBySignerRepository.findByKey_SingerNameAndKey_AlbumName(album.getOwner(),
                 album.getName())).thenReturn(Optional.empty());
-        when(signerService.isSignerExists(album.getOwner())).thenReturn(false);
+        when(singerService.isSignerExists(album.getOwner())).thenReturn(false);
 
         AlbumDto albumDto = albumService.create(album);
         assertNotNull(albumDto);
