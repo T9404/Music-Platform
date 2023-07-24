@@ -43,10 +43,10 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.getList());
     }
 
-    @Operation(summary = "api.albums.signer.operation.summary")
+    @Operation(summary = "api.albums.singer.operation.summary")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "api.albums.signer.api-responses.200.description"),
-            @ApiResponse(responseCode = "404", description = "api.albums.signer.api-responses.404.description",
+            @ApiResponse(responseCode = "200", description = "api.albums.singer.api-responses.200.description"),
+            @ApiResponse(responseCode = "404", description = "api.albums.singer.api-responses.404.description",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))}),
             @ApiResponse(responseCode = "500", description = "api.server.error",

@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table("album_by_signer")
+@Table("album_by_singer")
 public class AlbumBySinger implements Albums {
     @PrimaryKey
     private Key key = new Key();
@@ -30,7 +30,7 @@ public class AlbumBySinger implements Albums {
     @AllArgsConstructor
     @PrimaryKeyClass
     public static class Key {
-        @PrimaryKeyColumn(name = "signer_name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+        @PrimaryKeyColumn(name = "singer_name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
         private String singerName;
         @PrimaryKeyColumn(name = "album_name", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
         private String albumName;

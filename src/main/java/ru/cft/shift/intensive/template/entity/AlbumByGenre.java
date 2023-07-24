@@ -32,8 +32,8 @@ public class AlbumByGenre implements Albums {
     public static class Key {
         @PrimaryKeyColumn(name = "genre", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
         private String genre;
-        @PrimaryKeyColumn(name = "signer_name", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
-        private String signerName;
+        @PrimaryKeyColumn(name = "singer_name", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
+        private String singerName;
 
         public Key(String genre) {
             this.genre = genre;
@@ -56,9 +56,9 @@ public class AlbumByGenre implements Albums {
         }
     }
 
-    public AlbumByGenre(String genre, String signerName, String albumName, Timestamp releaseDate, Set<Song> songs) {
+    public AlbumByGenre(String genre, String singerName, String albumName, Timestamp releaseDate, Set<Song> songs) {
         key.genre = genre;
-        key.signerName = signerName;
+        key.singerName = singerName;
         this.albumName = albumName;
         this.releaseDate = releaseDate;
         this.songs = songs;
@@ -73,10 +73,10 @@ public class AlbumByGenre implements Albums {
     }
 
     public void setSignerName(String signerName) {
-        key.signerName = signerName;
+        key.singerName = signerName;
     }
 
     public String getSignerName() {
-        return key.signerName;
+        return key.singerName;
     }
 }

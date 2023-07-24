@@ -1,9 +1,9 @@
-CREATE TABLE example.album_by_signer
+CREATE TABLE example.album_by_singer
 (
-    signer_name  TEXT,
+    singer_name  TEXT,
     genre        TEXT,
     album_name   TEXT,
     release_date TIMESTAMP,
     songs        SET<FROZEN<example.song>>,
-    PRIMARY KEY ((signer_name), album_name)
+    PRIMARY KEY ((singer_name), album_name)
 ) WITH CLUSTERING ORDER BY (album_name ASC);

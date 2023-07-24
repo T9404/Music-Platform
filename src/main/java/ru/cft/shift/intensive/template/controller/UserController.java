@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.cft.shift.intensive.template.dto.SignerDto;
+import ru.cft.shift.intensive.template.dto.SingerDto;
 import ru.cft.shift.intensive.template.dto.UsernameDto;
 import ru.cft.shift.intensive.template.entity.Users;
-import ru.cft.shift.intensive.template.service.SignerService;
+import ru.cft.shift.intensive.template.service.SingerService;
 import ru.cft.shift.intensive.template.service.UsersService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -26,12 +26,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "api.user.tag.name", description = "api.user.tag.description")
 public class UserController {
     private final UsersService usersService;
-    private final SignerService signerService;
+    private final SingerService singerService;
 
     @Autowired
-    public UserController(UsersService usersService, SignerService signerService) {
+    public UserController(UsersService usersService, SingerService singerService) {
         this.usersService = usersService;
-        this.signerService = signerService;
+        this.singerService = singerService;
     }
 
     @Operation(summary = "api.user.create.operation.summary")
@@ -76,7 +76,7 @@ public class UserController {
                             schema = @Schema(implementation = ErrorControllerAdvice.ErrorResponse.class))})
     })
     @GetMapping("signer/{signerName}")
-    public ResponseEntity<SignerDto> getSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
-        return ResponseEntity.ok(signerService.findBySignerName(signerName));
+    public ResponseEntity<SingerDto> getSigner(@PathVariable @Size(min = 3, max = 50) String signerName) {
+        return ResponseEntity.ok(singerService.findBySignerName(signerName));
     }
 }
